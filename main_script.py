@@ -13,29 +13,30 @@ import convert_image as convert
 def take_screenshot():
     with open("take_screenshot.py") as f:
         exec(f.read())
-    
+
 # Open the state matrix
 def read_excel(excel_file):
     valve_list = []
     return valve_list
 
-options = input("Please select an option:\n\n"
+option = input("Please select an option:\n\n"
                 "\t1: Take Screenshot\n"
                 "\t2: Convert Images to Text\n"
-                "\t3: Read IO List\n"
+                "\t3: Read State Matrix\n"
                 "\t4: Compare Files\n")
 
-if options == 1:
-    exec(take_screenshot.py)
-    print("Taking Screenshots")
-elif options == 2:
-    print("Converting Images to Text")
-    print(convert.step_num)
-elif options == 3:
-    print("Read IO List")
-elif options == 4:
-    print("Comparing Files")
-    
+while option != 0:
+    if option == 1:
+        exec(take_screenshot.py)
+        print("Taking Screenshots")
+    elif option == 2:
+        print("Converting Images to Text")
+        print(convert.step_num)
+    elif option == 3:
+        print("Read IO List")
+    elif option == 4:
+        print("Comparing Files")
+
 # exec_script()
 #take_screenshot()
 
