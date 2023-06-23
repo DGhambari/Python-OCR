@@ -1,23 +1,34 @@
 import tkinter as tk
 import subprocess
-import take_screenshot
 import convert_image as convert
-# window = tk.Tk()
 
-# greeting = tk.Label(text="Hello, Tkinter")
-# greeting.pack()
+# ============================================================================ #
+# Take screenshots of the areas to be converted to text
+# ============================================================================ #
 
-# window.mainloop()
-
-# Areas to take screenshots from
 def take_screenshot():
     with open("take_screenshot.py") as f:
         exec(f.read())
 
-# Open the state matrix
+# ============================================================================ #
+# Convert the images to text
+# ============================================================================ #
+
+def convert_images():
+    with open("convert_image.py") as f:
+        exec(f.read())
+
+# ============================================================================ #
+# Open the state matrix and return a list of valves for a particular step
+# ============================================================================ #
+
 def read_excel(excel_file):
-    valve_list = []
-    return valve_list
+    with open("read_sequence.py") as f:
+        exec(f.read())
+
+# ============================================================================ #
+# Prompt the user to select an option
+# ============================================================================ #
 
 option = input("Please select an option:\n\n"
                 "\t1: Take Screenshot\n"
@@ -27,23 +38,13 @@ option = input("Please select an option:\n\n"
 
 while option != 0:
     if option == 1:
-        exec(take_screenshot.py)
         print("Taking Screenshots")
+        take_screenshot()
     elif option == 2:
         print("Converting Images to Text")
-        print(convert.step_num)
+        convert_images()
     elif option == 3:
-        print("Read IO List")
+        print("Read State Matrix")
+        valve_list = read_excel()
     elif option == 4:
         print("Comparing Files")
-
-# exec_script()
-#take_screenshot()
-
-# Write the steps, valves numbers and states to a json file
-#def create_json():
-
-# Function to take multiple screenshots and save them as separate files. One for the step number and four for the
-# valves (2 for the valve tags and 2 for the states)
-
-# Open tkinter to draw the outline of where the screenshots should be taken from

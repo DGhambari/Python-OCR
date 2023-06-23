@@ -2,6 +2,7 @@ from PIL import Image
 import pytesseract
 import numpy as np
 
+# Path to Tesseract-OCR executable. This is required for the script to function
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 step_number_img = '../images/step_num.jpg'
@@ -9,18 +10,30 @@ valve_list_img1 = '../images/valve_list1.jpg'
 valve_list_img2 = '../images/valve_list2.jpg'
 valve_states_img1 = '../images/valve_states1.jpg'
 valve_states_img2 = '../images/valve_states2.jpg'
+step_num = ""
+valve_list1 = ""
+valve_list2 = ""
+valve_states_list1 = ""
+valve_states_list2 = ""
 
-#def convert():
-step_num = (pytesseract.image_to_string(Image.open(step_number_img).convert('L')))
-valve_list1 = (pytesseract.image_to_string(Image.open(valve_list_img1).convert('L')))
-valve_list2 = (pytesseract.image_to_string(Image.open(valve_list_img2).convert('L')))
-valve_states_img1 = (pytesseract.image_to_string(Image.open(valve_states_img1).convert('L')))
-valve_states_img2 = (pytesseract.image_to_string(Image.open(valve_states_img2).convert('L')))
+# Convert the screenshots of the system to text
+def convert():
+    step_num = (pytesseract.image_to_string(Image.open(step_number_img).convert('L')))
+    valve_list1 = (pytesseract.image_to_string(Image.open(valve_list_img1).convert('L')))
+    valve_list2 = (pytesseract.image_to_string(Image.open(valve_list_img2).convert('L')))
+    valve_states_list1 = (pytesseract.image_to_string(Image.open(valve_states_img1)))
+    valve_states_list2 = (pytesseract.image_to_string(Image.open(valve_states_img2)))
 
-print(valve_list1)
-print(valve_states_img1)
-print(valve_list2)
-print(valve_states_img2)
+# Write the text to file
+def write_to_file():
+    print(step_num)
+    print(valve_list1)
+    print(valve_states_list1)
+    print(valve_list2)
+    print(valve_states_list2)
+
+convert()
+write_to_file()
 
 """
     return step_num, \
