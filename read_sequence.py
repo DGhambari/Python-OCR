@@ -1,5 +1,6 @@
 import xlrd
 import json
+import plot_coordinates
 
 loc = "C:/Users/DGhambari/OneDrive - Rockwell Automation, Inc/Documents/College/Final Project/Python-OCR/State_Matrix.xls"
 wb = xlrd.open_workbook(loc)
@@ -11,17 +12,13 @@ valve_list = './json/HMI_valve_list.json'
 # Read the text file that contains the step number
 # ============================================================================ #
 
-
-def find_step_num():
+def read_step_num():
     f = open(valve_list)
     data = json.load(f)
     if 'step_number' in data:
         result = data['step_number']
     f.close()
-    return result[0]
-
-
-step_number = find_step_num()
+    return result
 
 # ============================================================================ #
 # Find the cell that contains the step number. The easiest way to do this is to
@@ -54,12 +51,12 @@ def find_start_rows():
 # Only seems to be working for the first index of step_num_rows
 
 
-def find_step_num(step_num):
+def find_step_num_cell(step_num):
     x = 3
     result = []
     for row in step_num_rows:
         while x < sheet.ncols:
-            if str(step_num) in str(sheet.cell(row, x)):
+            if step_num in str(sheet.cell(row, x).value):
                 result = [row, x]
             x += 1
         x = 3
@@ -74,9 +71,9 @@ def convert_valve_states(state):
     result = []
     for i in range(len(state)):
         if state[i] == "A":
-            result.append("Open")
+            result.append("OPEN")
         elif state[i] == "R":
-            result.append("Closed")
+            result.append("CLOSE")
         else:
             result.append(f"{state} - Manual Inspection Required")
     return result
@@ -120,38 +117,28 @@ def combine_lists(tags, states):
         result = {["Tag list and state list are not equal in size"]}
     return result
 
-# ============================================================================ #
-# Function to convert the French valve state to English
-# ============================================================================ #
-
-
-def translate(text):
-    result = ""
-    close_list = {"Fermé", "Ferme"}
-    if text == "Ouvert":
-        result = "OPEN"
-    elif text in close_list:
-        result = "CLOSE"
-    return result
 
 # ============================================================================ #
 # Write the text to file
 # ============================================================================ #
 
-def write_to_file(list):
+
+def write_to_file(list, step_number):
     data = {
-        "valves" : list
+        "step_number" : step_number,
+        "valves": list
     }
     file_name = "./json/doc_valve_list.json"
 
     with open(file_name, "w") as json_file:
         json.dump(data, json_file)
 
-
 if __name__ == '__main__':
+
+    step_number = read_step_num()
     step_num_rows = find_start_rows()
-    step_cell = find_step_num(step_number)
+    step_cell = find_step_num_cell(step_number)
     valve_states = convert_valve_states(find_valve_states(step_cell))
     valve_tags = find_valve_tags(step_cell)
     valves = combine_lists(valve_tags, valve_states)
-    write_to_file(valves)
+    write_to_file(valves, step_number)

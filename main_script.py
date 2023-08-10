@@ -38,6 +38,7 @@ def exec_script_args(script_name, a, b):
 # ============================================================================ #
 
 option = 999
+image = ''
 
 while option != 0:
     if option == 1:
@@ -66,11 +67,12 @@ while option != 0:
     elif option == 5:
         print("************************************************************\n"
               "Taking Screenshots")
-       # subprocess.run(['python', 'take_screenshot.py', image])
         exec_script_arg('take_screenshot.py', image)
 
     elif option == 6:
-        print("Comparing Files")
+        print("************************************************************\n"
+              "Comparing Files\n")
+        exec_script('compare_files.py')
 
     elif option == 0:
         print("Exiting")

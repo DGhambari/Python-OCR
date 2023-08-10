@@ -2,7 +2,6 @@ import pyscreenshot
 import json
 import cv2
 import sys
-import time
 
 valve_list = './json/coordinates.json'
 coordinates = {

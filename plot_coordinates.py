@@ -3,23 +3,32 @@ import json
 import os.path
 import sys
 
-# function to write to a JSON file
+# Function to write to a JSON file
+def write_json(data_to_write, path, file_name):
 
+    # Check if the directory exists, if not, create it
+    if os.path.exists(path) == False:
+        os.mkdir(path)
+        open(file_name, mode='x')
+    
+    # If the directory exists but the file does not:
+    if not os.path.isfile(file_name):
+        open(file_name, mode='x')
 
-def write_json(data_to_write, area, filename='./json/coordinates.json'):
-    with open(filename, 'r+') as json_file:
-        # First load existing data into a dict.
-        file_data = json.load(json_file)
-        # Join new_data with file_data inside coordinates
-        file_data.update(data_to_write)
-        # Sets file's current position at offset.
-        json_file.seek(0)
-        # Convert back to json.
-        json.dump(file_data, json_file, indent=4)
+    # If the file is not empty, read it first
+    if os.path.getsize(file_name) > 0:
+        with open(file_name, 'r+') as json_file:
+            file_data = json.load(json_file)
+            file_data.update(data_to_write)
+            json_file.seek(0)
+            json.dump(file_data, json_file, indent=4)
+    
+    # If the file is empty then write to it
+    else:
+        with open(file_name, 'w+') as json_file:
+            json.dump(data_to_write, json_file, indent=4)
 
 # Function to plot coordinates of the portions of the screen to be converted to text
-
-
 def plot_coordinates(AREA, IMAGE):
 
     coordinates = []
@@ -47,26 +56,12 @@ def plot_coordinates(AREA, IMAGE):
 
     # Create dictionary to add to a json file
     data_to_write = {AREA: coordinates}
-
     file_name = "./json/coordinates.json"
     path = 'json'
 
-    # If the file already exists
-    if os.path.isfile(file_name) == True:
-        write_json(data_to_write, AREA)
+    write_json(data_to_write, path, file_name)
 
-    # If the directory exists but not the file
-    elif os.path.exists(path) == True:
-        with open(file_name, "w+") as json_file:
-            json.dump(data_to_write, json_file)
-
-    # If the directory does not exist
-    elif os.path.exists(path) == False:
-        os.mkdir('json')
-        with open(file_name, "w+") as json_file:
-            json.dump(data_to_write, json_file)
     cv2.waitKey(0)
-
 
 if __name__ == "__main__":
     AREA = sys.argv[1]
