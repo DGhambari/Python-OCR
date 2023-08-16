@@ -1,4 +1,6 @@
 OUVERT
 FERMÉ
-OUVERT
+FERME
+Ouvert
 Fermé
+Ferme

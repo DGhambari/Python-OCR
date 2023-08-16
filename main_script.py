@@ -44,12 +44,12 @@ while option != 0:
     if option == 1:
         print("************************************************************\n")
         image = input("Which screenshot should be examined?: ")
-        print(f"Image {image} selected\n")
+        print(f"\nImage {image} selected\n")
 
     if option == 2:
         for area in screenshot_list:
             print("************************************************************\n"
-                f"\nSelect the area to crop for {area}\n")
+                  f"\nSelect the area to crop for {area}\n")
             exec_script_args("plot_coordinates.py", area, image)
             input("Press Enter to continue to the next area or '0' to exit: \n")
 
@@ -61,8 +61,7 @@ while option != 0:
     elif option == 4:
         print("************************************************************\n"
               "Reading State Matrix")
-        valve_list = exec_script('read_sequence.py')
-        print(valve_list)
+        exec_script('read_sequence.py')
 
     elif option == 5:
         print("************************************************************\n"
@@ -78,12 +77,12 @@ while option != 0:
         print("Exiting")
 
     option = int(input("************************************************************\n"
-                   "\nPlease select an option or '0' to exit:\n\n"
-                   "\t1: Select Screenshot to examine\n"
-                   "\t2: Select Image Areas to Convert\n"
-                   "\t3: Convert Images to Text\n"
-                   "\t4: Read State Matrix\n"
-                   "\t5: Use Existing Coordinates and Take New Screenshots\n"
-                   "\t6: Compare Files\n"
-                   "\t0: Exit\n"
-                   "\nOption: "))
+                       "\nPlease select an option or '0' to exit:\n\n"
+                       "\t1: Select Screenshot to examine\n"
+                       "\t2: Select Image Areas to Convert\n"
+                       "\t3: Convert Images to Text\n"
+                       "\t4: Read State Matrix\n"
+                       "\t5: Use Existing Coordinates and Take New Screenshots\n"
+                       "\t6: Compare Files\n"
+                       "\t0: Exit\n"
+                       "\nOption: "))

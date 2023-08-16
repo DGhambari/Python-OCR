@@ -1,6 +1,5 @@
 import xlrd
 import json
-import plot_coordinates
 
 loc = "C:/Users/DGhambari/OneDrive - Rockwell Automation, Inc/Documents/College/Final Project/Python-OCR/State_Matrix.xls"
 wb = xlrd.open_workbook(loc)
@@ -131,7 +130,7 @@ def write_to_file(list, step_number):
     file_name = "./json/doc_valve_list.json"
 
     with open(file_name, "w") as json_file:
-        json.dump(data, json_file)
+        json.dump(data, json_file, indent=4)
 
 if __name__ == '__main__':
 

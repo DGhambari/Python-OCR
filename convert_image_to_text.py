@@ -1,7 +1,6 @@
 from PIL import Image
 import pytesseract
 import json
-import plot_coordinates
 
 # ============================================================================ #
 # Path to Tesseract-OCR executable. This is required for the script to function
@@ -19,22 +18,46 @@ valve_states_img2 = './images/valve_states2.jpg'
 # Convert the screenshots of the system to text
 # ============================================================================ #
 
-custom_options = r'--user_words tesseract_words.txt --user-patterns tesseract_patterns.txt'
+# Set custom parameters for the image to text conversion
+custom_patterns = r'--user-patterns tesseract_patterns.txt \
+    -c tessedit_char_whitelist=xvXV0123456789 '
+custom_words = r'--user-patterns tesseract_words.txt'
 
+# Convert each image
 step_number = (pytesseract.image_to_string(
     Image.open(step_number_img).convert('L')))
+
 valve_list1 = (pytesseract.image_to_string(
-    Image.open(valve_list_img1).convert('L')))
+    Image.open(valve_list_img1).convert('L'), config=custom_patterns))
+
 valve_list2 = (pytesseract.image_to_string(
-    Image.open(valve_list_img2).convert('L')))
+    Image.open(valve_list_img2).convert('L'), config=custom_patterns))
+
+# If there is an issue converting the valve states, try
+# removing the custom config or print a message to the terminal
 valve_states_list1 = (pytesseract.image_to_string(
-    Image.open(valve_states_img1).convert('L')))
+    Image.open(valve_states_img1).convert('L'), config=custom_words))
+
+if not valve_states_list1:
+    valve_states_list1 = (pytesseract.image_to_string(
+        Image.open(valve_states_img1)))
+
+if not valve_states_list1:
+    print("There is a problem converting the first valve states list to text")
+
 valve_states_list2 = (pytesseract.image_to_string(
-    Image.open(valve_states_img2).convert('L')))
+    Image.open(valve_states_img2).convert('L'), config=custom_words))
+
+if not valve_states_list2:
+    valve_states_list2 = (pytesseract.image_to_string(
+        Image.open(valve_states_img2)))
+
+if not valve_states_list2:
+    print("There is a problem converting the second valve states list to text")
 
 
 # ============================================================================ #
-# Tidy the lists up
+# Tidy the lists up by removing new lines
 # ============================================================================ #
 
 
@@ -69,6 +92,7 @@ def tidy(list):
 file_name = "./json/HMI_valve_list.json"
 path = './json'
 
+
 def write_to_file():
     data = {
         "step_number": updated_step_number,
@@ -77,7 +101,7 @@ def write_to_file():
     file_name = "./json/HMI_valve_list.json"
 
     with open(file_name, "w+") as json_file:
-        json.dump(data, json_file)
+        json.dump(data, json_file, indent=4)
 
 # ============================================================================ #
 # Combine dictionaries
